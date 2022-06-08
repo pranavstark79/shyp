@@ -1,0 +1,34 @@
+{
+  "name": "shyp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pranavstark79/shyp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pranavstark79/shyp/issues"
+  },
+  "homepage": "https://github.com/pranavstark79/shyp#readme",
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.20.1",
+    "winston": "^3.7.2"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.4.1"
+  }
+}
