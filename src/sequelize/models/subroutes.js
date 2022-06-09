@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Subroutes.hasMany(models.Stations, {as: 'stations'});
+      Subroutes.belongsTo(models.Routes, {foreignKey: 'routeId'})
     }
   }
   Subroutes.init({

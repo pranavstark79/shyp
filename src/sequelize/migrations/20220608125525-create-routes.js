@@ -14,13 +14,10 @@ module.exports = {
       destination: {
         type: Sequelize.STRING
       },
-      departureTime: {
+      boardingTime: {
         type: Sequelize.STRING
       },
-      arrivalTime: {
-        type: Sequelize.STRING
-      },
-      busNumber: {
+      droppingTime: {
         type: Sequelize.STRING
       },
       createdAt: {

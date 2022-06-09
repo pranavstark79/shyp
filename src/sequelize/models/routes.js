@@ -11,14 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Routes.hasMany(models.Buses, {as: 'buses', foreignKey: 'routeId'}, {onDelete: 'cascade'});
+      Routes.hasMany(models.Subroutes, {foreignKey: 'routeId'});
     }
   }
   Routes.init({
     source: DataTypes.STRING,
     destination: DataTypes.STRING,
-    departureTime: DataTypes.STRING,
-    arrivalTime: DataTypes.STRING,
-    busNumber: DataTypes.STRING
+    boardingTime: DataTypes.STRING,
+    droppingTime: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Routes',

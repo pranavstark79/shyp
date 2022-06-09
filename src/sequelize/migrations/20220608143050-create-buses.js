@@ -11,17 +11,37 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      desription: {
+      busNumber: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      description: {
         type: Sequelize.STRING
       },
+      fare: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       maxSeatsCapacity: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      availableSeatsCapacity: {
         type: Sequelize.INTEGER
       },
       maxLuggageCapacity: {
         type: Sequelize.INTEGER
       },
-      routeId: {
+      availableSeatsCapacity: {
         type: Sequelize.INTEGER
+      },
+      routeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {              //Buses belongs to Route 1:1
+          model: 'Routes',
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

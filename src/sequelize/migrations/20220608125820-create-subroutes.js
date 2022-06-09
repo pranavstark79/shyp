@@ -9,10 +9,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       routeId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {           //subRoutes belongs to Routes 1:1
+          model: 'Routes',
+          key: 'id'
+        }
       },
       stationId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {          //SubRoutes has many Stations 1:n
+          model: 'Stations', 
+          key: 'id'
+        }
       },
       arrivalTime: {
         type: Sequelize.STRING
