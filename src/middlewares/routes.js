@@ -1,6 +1,7 @@
 "use strict";
 
 const searchRoutes = require('../routes/search');
+const userRoutes = require('../routes/user');
 const indexRoutes = require('../routes/health');
 // const bookingRoutes = require('../routes/booking');
 
@@ -8,6 +9,7 @@ const configureRoutes = (app) => {
 
     app.use('/', indexRoutes)
     app.use('/api/search', searchRoutes);
+    app.use('/api/user', userRoutes);
     // app.use('/api/booking', bookingRoutes);
 
     //catch 404 and respond accordingly

@@ -4,21 +4,27 @@ const { Op } = require('sequelize');
 
 const search = async (source, destination, boardingTime) => {
     try {
-        const ISOBoardingTime = new Date(parseInt(boardingTime) * 1000).toISOString();
-        const data = await Routes.findAll({
+
+        const queryObj = {
             where: {
                 source,
-                destination,
-                boardingTime: {
-                    [Op.gte]: ISOBoardingTime
-                }
+                destination
             },
             include: ['buses']
-        });
+        };
+
+        if (boardingTime) {
+            const ISOBoardingTime = new Date(parseInt(boardingTime) * 1000).toISOString();
+            queryObj.where["boardingTime"] = {
+                [Op.gte]: ISOBoardingTime
+            }
+        }
+
+        const data = await Routes.findAll(queryObj);
         return data;
-        
+
     } catch (error) {
-        throw new Error(error);
+        console.log(error);
     }
 }
 

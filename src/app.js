@@ -1,9 +1,14 @@
 "use strict"
 
 const express = require("express");
+const bodyParser = require('body-parser');
 const { logger, configureErrorLogger, configureReqLogger } = require("./middlewares/logger");
 const { configureRoutes } = require("./middlewares/routes");
 const app = express();
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 configureReqLogger(app);
 configureErrorLogger(app);
