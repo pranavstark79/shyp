@@ -1,56 +1,61 @@
 'use strict'
 
 const { Payments } = require('../sequelize/models');
-const { Transactions } = require('../sequelize');
-const crypto = require("crypto");
+const { Transactions } = require('../sequelize/models');
 
 const addPaymentDetail = async (userId, mode, cardNumber, expiry, cvv) => {
-    const isExits = await Payments.findOne({userId, mode, cardNumber, cvv});
-
-    if(isExits) return true;
-    
-    const response = await Payments.create({userId, mode, cardNumber, expiry, cvv});
-    return true;
+    console.log(userId,mode, cardNumber, expiry, cvv);
+    const existingPaymentInfo = await Payments.findOne({where:{userId, mode, cardNumber, cvv}});
+    if(existingPaymentInfo && existingPaymentInfo.id){
+        return existingPaymentInfo.id;
+    } 
+    const paymentCreatedRes = await Payments.create({userId, mode, cardNumber, expiry, cvv});
+    return paymentCreatedRes.id;
 }
 
 
-const processPayment = async (userId, mode) => {
+const processPayment = async (userId, mode, amount) => {
 
-    const paymentDetails = await Payments.find({
+    const paymentDetails = await Payments.findOne({
         where: {
             userId,
-            paymentMode: mode
+            mode
         }
     });
 
-    if(paymentDetails){
+    console.log("____----____", JSON.stringify(paymentDetails));
+
+    if(Object.keys(paymentDetails).length > 0){
 
         const paymentResponse = await new Promise((resolve, reject) => {
-            const paymentId = crypto.randomBytes(16).toString("hex");
             setTimeout(() => {
                 const isPaymentSuccess = Math.round(Math.random() * 10) % 2 === 0 ? true : false;
                 if(isPaymentSuccess){
-                    resolve({isPaymentSuccess: true, paymentId})
+                    resolve({isPaymentSuccess: true,  amount})
                 } else {
-                    reject({isPaymentSuccess: false, paymentId: null});
+                    reject({isPaymentSuccess: false});
                 }
             }, 1000);
         });
 
-        const {isPaymentSuccess, paymentId} = paymentResponse;
+        const {isPaymentSuccess} = paymentResponse;
+
+
+        console.log("isPaymentSuccess",isPaymentSuccess);
 
         const paymentInsertObj = {
             userId,
+            amount,
+            paymentSourceId: paymentDetails.id,
             paymentMode: mode,
-            isPaymentSuccess,
-            paymentId
+            status: isPaymentSuccess ? 'success' : 'failed' 
         }        
-        const insertResponse = await Transactions.insert(paymentInsertObj);
+        const insertResponse = await Transactions.create(paymentInsertObj);
         
         if(insertResponse && isPaymentSuccess){ 
             return {
                 status: 'success',
-                data: { isPaymentSuccess,  paymentId }
+                data: { isPaymentSuccess }
             } 
         } else {
             return {

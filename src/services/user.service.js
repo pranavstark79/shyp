@@ -1,23 +1,38 @@
 'use strict'
 
-const { User } = require('../sequelize/models');
+const { Users } = require('../sequelize/models');
 
 const createUser = async (name, age, phone, email, address) => {
-    try {
-        const isUserExists = await User.findOne({ email });
-        if (isUserExists) {
-            return { userId }
-        } else {
-            const userData = await User.create({ name, age, phone, email, address });
-            console.log("userData", userData);
-            return { userId };
+    const existingUserData = await Users.findOne({
+        where: {
+            email
         }
+    });
 
-    } catch (error) {
-        throw new Error(error);
+    if (existingUserData && existingUserData.id) {
+        return {
+            userId: existingUserData.id
+        }
+    } else {
+        const userData = await Users.create({ name, age, phone, email, address });
+        const { id: userId } = userData;
+        return { userId };
     }
+
 };
 
+
+const findUser = async (userId) => {
+    const userData = await Users.findOne({
+        where: {
+            id: userId
+        },
+        include: ['payments']
+    });
+    return userData;
+}
+
 module.exports = {
-    createUser
+    createUser,
+    findUser
 }

@@ -6,13 +6,12 @@ const { logger, configureErrorLogger, configureReqLogger } = require("./middlewa
 const { configureRoutes } = require("./middlewares/routes");
 const app = express();
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 
+app.use(express.json());
 configureReqLogger(app);
 configureErrorLogger(app);
 configureRoutes(app);
+
 
 logger.info('Backend API initialized.');
 
